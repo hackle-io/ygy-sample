@@ -86,7 +86,7 @@ class HackleRepository(
         val savedAbTests = dataSource.getHackleAbTests()
         val decisions = hackleApp.allVariationDetails()
 
-        // 완료된 AB테스트는 제거함 (
+        // 완료된 AB테스트는 제거함
         val abTestsWithoutCompleted = savedAbTests
             .filterNot { (id, abTest) -> isAbTestCompleted(abTest, decisions[id]) }
 

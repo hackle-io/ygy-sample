@@ -84,23 +84,19 @@ class HackleRepository(
      */
     fun init() {
         val savedAbTests = dataSource.getHackleAbTests()
-        val abTestsWithoutCompleted = removeCompletedAbTestWithAllVariationDetails(savedAbTests)
+        val decisions = hackleApp.allVariationDetails()
+
+        // 완료된 AB테스트는 제거함 (
+        val abTestsWithoutCompleted = savedAbTests
+            .filterNot { (id, abTest) -> isAbTestCompleted(abTest, decisions[id]) }
+
         dataSource.setHackleAbTests(abTestsWithoutCompleted)
         this.abTests.putAll(abTestsWithoutCompleted)
     }
 
-    private fun removeCompletedAbTestWithAllVariationDetails(abTests: Map<Long, HackleAbTest>): Map<Long, HackleAbTest> {
-        val decisions = hackleApp.allVariationDetails()
-        val result = abTests.toMutableMap()
-        for ((id, abTest) in abTests) {
-            val decision = decisions[id]
-            if (isAbTestCompleted(abTest, decision)) {
-                result.remove(id)
-            }
-        }
-        return result
-    }
-
+    /**
+     * 저장되어있는 분배 정보와 allVariationDetails 를 호출하여 응답받은 결과로 완료된 AB테스트인지 판단한다.
+     */
     private fun isAbTestCompleted(previousAbTest: HackleAbTest, currentDecision: Decision?): Boolean {
 
         /**

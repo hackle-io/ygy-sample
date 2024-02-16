@@ -79,6 +79,8 @@ class HackleRepository(
 
     /**
      * 앱 초기화시 호출
+     *
+     * Hackle SDK 의 allVariationDetails 메소드를 호출하여 응답받은 분배 결과중 완료된 AB 테스트인 경우 저장소에서 제거한다.
      */
     fun init() {
         val savedAbTests = dataSource.getHackleAbTests()

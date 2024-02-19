@@ -10,7 +10,7 @@ class HackleAbTestJavascriptInterface(
     /**
      * ts
      * const decision = useVariationDetail(key)
-     * JavascriptInterface.updateAbTest(decision)
+     * JavascriptInterface.updateAbTest(JSON.stringify(decision))
      */
     @JavascriptInterface
     fun updateAbTest(json: String) {

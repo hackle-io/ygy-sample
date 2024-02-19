@@ -47,7 +47,7 @@ data class HackleAbTest(
                 id = experiment.getLong("key"),
                 group = decision.getString("variation"),
                 version = experiment.getInt("version"),
-                decisionReason = decision.getString("decisionReason")
+                decisionReason = decision.getString("reason")
             )
         }
     }

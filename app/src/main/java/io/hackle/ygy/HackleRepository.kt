@@ -4,6 +4,7 @@ import io.hackle.android.HackleApp
 import io.hackle.sdk.common.User
 import io.hackle.sdk.common.decision.Decision
 import io.hackle.sdk.common.decision.DecisionReason
+import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 
 
@@ -90,8 +91,13 @@ class HackleRepository(
         val abTestsWithoutCompleted = savedAbTests
             .filterNot { (id, abTest) -> isAbTestCompleted(abTest, decisions[id]) }
 
-        dataSource.setHackleAbTests(abTestsWithoutCompleted)
-        this.abTests.putAll(abTestsWithoutCompleted)
+
+        this.setAbTests(abTestsWithoutCompleted)
+    }
+
+    internal fun setAbTests(abTests: Map<Long, HackleAbTest>) {
+        dataSource.setHackleAbTests(abTests)
+        this.abTests.putAll(abTests)
     }
 
     /**
@@ -137,7 +143,9 @@ class HackleRepository(
 
 
     private fun getUser(): User {
-        TODO("기존 유저 생성 로직")
+        return User.builder()
+            .id(UUID.randomUUID().toString())
+            .build()
     }
 
     companion object {
